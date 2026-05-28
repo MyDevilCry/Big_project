@@ -34,7 +34,7 @@ def catalog(request, category_slug=None):
  if order_by and order_by != 'default':
     goods = goods.order_by(order_by)
 
- paginator = Paginator(goods, 2 ) #Тут я роблю те скільки товарів буде відображатись на сторінці
+ paginator = Paginator(goods, 6 ) #Тут я роблю те скільки товарів буде відображатись на сторінці
  current_page = paginator.get_page(page) #Це номер сторінки який я відображаю
 
 
