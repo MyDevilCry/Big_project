@@ -1,5 +1,5 @@
 from django import forms
-from django.contrib.auth.forms import AuthenticationForm, UserCreationForm,get_user_model
+from django.contrib.auth.forms import AuthenticationForm, UserCreationForm, get_user_model, UserChangeForm
 
 User = get_user_model()
 #forms.model.Form дозволяє РЕДАГУВАТИ вже готові дані
@@ -22,14 +22,21 @@ class UserRegisterForm(UserCreationForm):
                   'first_name',
                   'last_name',
         )
+class ProfileForm(UserChangeForm):
+    class Meta:
+        model = User
+        fields= (
+        "image",
+        "first_name",
+        "last_name",
+        "username",
+        "email",)
+    image= forms.ImageField()
+    first_name= forms.CharField()
+    last_name= forms.CharField()
+    email= forms.EmailField()
 
 
-    def save(self, commit=True): #commit=True — це наказ. Він означає: "За замовчуванням, як тільки дані оброблені, відразу запиши їх у базу даних".
-        user = super().save(commit=False) #Цим ми кажемо Django:
-# "Візьми дані з форми (username, email, first_name, last_name), створи з них тимчасовий об'єкт користувача в пам'яті комп'ютера, але поки що не записуй його в базу даних".
-        user.set_password(self.cleaned_data['password1']) #Тут ми робимо так щоб коли користувач ввів пароль, ця строка його зашифрувала
-        if commit: #якщо я викликаю метод як form.save(), то commit автоматично дорівнює True
-            user.save()
 
 
 
