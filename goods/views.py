@@ -48,7 +48,6 @@ def catalog(request, category_slug=None):
 
 
 def product(request, product_slug):
- # Тепер цей код ЗАЙШОВ всередину функції (є Tab)
  product_item = Products.objects.get(slug=product_slug)
 
  context = {
