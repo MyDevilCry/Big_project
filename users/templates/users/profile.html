@@ -87,12 +87,16 @@
                                             <!-- Разметка корзины -->
                                             {% include 'cart/includes/included_cart.html' %}
                                             <!-- Закончилась разметка корзины -->
+
                                         </div>
+                                        {% if carts %}
                                         <a class="btn btn-dark" href="../orders/create_order.html">
                                             Оформить заказ
+                                            {% endif %}
                                         </a>
                                     </div>
                                 </div>
+
                                 <!-- Оформленные заказы -->
                                 <div class="col-md-12">
                                     <div class=" bg-white p-4 mb-4 mx-2 rounded custom-shadow">

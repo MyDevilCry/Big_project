@@ -1,14 +1,10 @@
 from django import template
-from cart.models import Cart
+from cart.templatetags.utils import  get_user_cart
 
 register = template.Library()
 
 @register.simple_tag()
-def user_carts(request): #Робимо кошик для зареєстрованого користувача
-    if request.user.is_authenticated:
-        return Cart.objects.filter(user=request.user)
+def user_carts(request):
+    return get_user_cart(request)
 
-    if not request.session.session_key: #А цей кошик не для зареєстрованого користувача
-        request.session.save()
-    return Cart.objects.filter(user=request.user)
 
