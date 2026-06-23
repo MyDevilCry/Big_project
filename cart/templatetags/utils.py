@@ -8,5 +8,5 @@ def get_user_cart(request):
         return Cart.objects.filter(user=request.user).order_by('id')
 
     if not request.session.session_key:
-        request.session.save()
+        request.session.create()
     return Cart.objects.filter(session_key=request.session.session_key)
