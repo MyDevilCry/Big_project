@@ -53,7 +53,7 @@ def registration(request):
             messages.success(request, f"{form.cleaned_data['username']},Вы успешно зарегистрировались")
 
             if session_key:
-                Cart.objects.filter(session_key=session_key).update(user=user)
+                Cart.objects.filter(session_key=session_key).update(user=user) #
 
             return HttpResponseRedirect(reverse('main:index'))
     else:

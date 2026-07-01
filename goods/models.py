@@ -1,4 +1,5 @@
 from django.db import models
+from django.urls import reverse
 
 class Categories(models.Model):
     name = models.CharField("Назва",max_length=100, unique=True)
@@ -30,8 +31,11 @@ class Products(models.Model):
     def __str__(self):
         return f'{self.name}, Кількість - {self.quantity}'
 
+    def get_absolute_url(self):
+        return reverse('catalog:product',kwargs={'product_slug':self.slug})
+
     def display_id(self): #Це ID товару записано
-        return f' {self.id:05}'
+        return f' {self.pk:05}'
 
     def sell_price(self): #Це знижка
         if self.discount:
