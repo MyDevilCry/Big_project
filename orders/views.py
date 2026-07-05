@@ -16,8 +16,8 @@ def create_order(request):
         if form.is_valid():
             try:
                 with transaction.atomic(): #Ця строка потрібна для безпеки у разі збою сайту, або інтернету користувача, воно відкатує назад замовлення
-                    cart_items = Cart.objects.filter(user=request.user)
-                    user=request.user
+                    user = request.user
+                    cart_items = Cart.objects.filter(user=user)
                     if cart_items.exists(): #Тут ми створюємо замовлення
                         order = Order.objects.create(
                             user=user,
@@ -30,7 +30,7 @@ def create_order(request):
                         for cart_item in cart_items: #Запускаємо цикл по всіх елементах які лежать у кошику користувача
                             product = cart_item.product #Витягуємо об'єкт з кошика
                             name = cart_item.product.name #Беремо текстову назву товару
-                            price = cart_item.product.sell_price
+                            price = cart_item.product.sell_price()
                             quantity = cart_item.quantity
 
                             if product.quantity < quantity: #Якщо продукту немає на складі , видаємо користувачу помилку
@@ -42,7 +42,7 @@ def create_order(request):
                                 price=price,
                                 quantity=quantity,
                             )
-                            product.quantity = quantity
+                            product.quantity -= quantity
                             product.save()
 
                         cart_items.delete() #Видаляємо товари з кошику після того як покупець зробив замовлення
@@ -50,14 +50,14 @@ def create_order(request):
                         return redirect('user:profile')
             except ValidationError as e:
                 messages.error(request, str(e)) # Через e передаємо користувачу помилку
-                return redirect('cart:order')
+                return redirect('cart:orders')
     else:
         initial = { #створюємо це поле для того щоб користувач не вводив щоразу ім'я та прізвище
             'first_name': request.user.first_name,
             'last_name': request.user.last_name,
         }
         form = CreateOrderForm(initial=initial)
-        context = {
+    context = {
             'title':'Home - оформление заказа',
             'form': form,
         }

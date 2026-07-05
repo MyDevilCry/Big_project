@@ -25,12 +25,27 @@
                                 <div class="card-body">
                                     <form action="{% url 'orders:create_order' %}" method="post">
                                     {% csrf_token %}
+                                        {% if form.errors %}
+    <div style="background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; padding: 15px; margin-bottom: 20px; rounded: 5px;">
+        <strong>🚨 Помилки валідації форми:</strong>
+        <ul>
+            {% for field in form %}
+                {% if field.errors %}
+                    <li><strong>{{ field.label }} (поле: {{ field.name }}):</strong> {{ field.errors|striptags }}</li>
+                {% endif %}
+            {% endfor %}
+            {% if form.non_field_errors %}
+                <li>{{ form.non_field_errors|striptags }}</li>
+            {% endif %}
+        </ul>
+    </div>
+{% endif %}
                                         <div class="row">
                                             <div class="col-md-6 mb-3">
                                                 <label for="id_first_name" class="form-label">Имя*:</label>
                                                 <input type="text" class="form-control" id="id_first_name"
                                                        value="{{ form.first_name.value|default_if_none:'' }}"
-                                                    name="first_name" required>
+                                                       name="first_name" required>
                                                 {%if form.first_name.errors%}
                                                 <div class="alert alert-danger alert-dismissible fade show">{{form.first_name.errors}}</div>
                                                 {% endif %}
@@ -75,6 +90,9 @@
                                                     доставки*:</label>
                                                 <textarea class="form-control" id="id_delivery_address"
                                                           name="delivery_address"  rows="2">{{ form.delivery_address.value|default_if_none:'' }}</textarea>
+                                                 {%if form.delivery_address.errors%}
+                                                <div class="alert alert-danger alert-dismissible fade show">{{form.delivery_address.errors}}</div>
+                                                {% endif %}
 
                                             </div>
                                             <div class="col-md-12 mb-3">
@@ -97,9 +115,10 @@
                                             </div>
                                         </div>
                                         <button type="submit" class="btn btn-dark">Оформить заказ</button>
-                                    </form>
+                                        </form>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
                     </div>
+
 {% endblock %}
