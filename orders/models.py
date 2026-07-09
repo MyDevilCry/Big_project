@@ -3,6 +3,7 @@ from goods.models import Products
 
 from users.forms import User
 
+
 #Тут ми вираховуємо загальну ціну всих продуктів в кошику покупця
 class OrderItemQueryset(models.QuerySet):
     def total_price(self):
@@ -30,6 +31,9 @@ class Order(models.Model):
         db_table = 'orders'
         verbose_name = 'Заказ'
         verbose_name_plural = 'Заказы'
+
+    def order_total_price(self):
+            return sum(item.product_price() for item in self.orderitem_set.all())
 
     def __str__(self):
         return f"Заказ №{self.pk} | Покупатель {self.user.first_name} | {self.user.last_name}"

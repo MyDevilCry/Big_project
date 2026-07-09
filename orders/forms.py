@@ -1,3 +1,5 @@
+import re
+
 from django import forms
 
 class CreateOrderForm(forms.Form):
@@ -17,9 +19,17 @@ class CreateOrderForm(forms.Form):
              ("1", 'True'),
         ],
      )
+# Робимо валідацію для перевірки номеру телефона
+    def clean_phone_number(self):
+        data = self.cleaned_data['phone_number']
+        if not data.isdigit():
+            raise forms.ValidationError("Номер должен содержать только цифры")
 
+        pattern = re.compile(r"^\d{10}$") #Вказуємо те що номер телефону має містить 10 цифр
+        if not pattern.match(data): #Перевіряємо паттерн якщо цифр менше видаємо користувачу помилку
+            raise forms.ValidationError("Неверный формат номера")
 
-
+        return data
 
     # first_name = forms.CharField(
     #     widget=forms.TextInput(

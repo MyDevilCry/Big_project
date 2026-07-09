@@ -41,6 +41,7 @@ def cart_add(request):
     response_data = {
         "message" : "Товар добавлен в корзину",
         "cart_items_html" : cart_items_html ,
+        "total_quantity": user_carts.total_quantity()
     }
     return JsonResponse(response_data) #Робимо цей редірект щоб після додавання товару у кошик користувач залишався на тій самій сторінці
 
@@ -59,6 +60,7 @@ def cart_change(request):
     response_data = {
         "message": 'Количество изменено',
         "cart_items_html" : cart_items_html ,
+        "total_quantity": user_carts.total_quantity()
 
     }
     return JsonResponse(response_data)

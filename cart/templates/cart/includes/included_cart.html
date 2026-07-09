@@ -1,8 +1,7 @@
 {% load static %}
 
-
+                                    {% for cart in carts %}
                                     <div class="card mb-3 text-bg-light shadow-lg">
-                                        {% for cart in carts %}
                                         <div class="card-header">
                                             <h5 class="card-title">{{cart.product.name}}</h5>
                                         </div>
@@ -24,7 +23,6 @@
                                                                     data-cart-id="{{ cart.id }}"
                                                                         data-cart-change-url="{% url 'cart:cart_change' %}">
                                                                     {% csrf_token %}+</button>
-
                                                             </span>
                                                         </div>
                                                     </div>
@@ -43,11 +41,15 @@
                                                 </div>
                                             </li>
                                         </ul>
-                                        {% endfor %}
                                     </div>
-                                    <div class="card mb-3 shadow-lg">
+                                    {% endfor %} <div class="card mb-3 shadow-lg">
                                         <div class="card-footer">
                                             <p class="float-left">Итого <strong>{{ carts.total_quantity }}</strong> товар(а) на сумму</p>
                                             <h4 class="float-left"><strong>{{ carts.total_price }}$</strong></h4>
                                         </div>
                                     </div>
+                                    {% if carts and not order %}
+                                <a class="btn btn-dark" href="{% url 'orders:create_order' %}">
+                                    Оформить заказ
+                                </a>
+                                {% endif %}

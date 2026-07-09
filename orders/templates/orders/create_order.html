@@ -25,21 +25,6 @@
                                 <div class="card-body">
                                     <form action="{% url 'orders:create_order' %}" method="post">
                                     {% csrf_token %}
-                                        {% if form.errors %}
-    <div style="background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; padding: 15px; margin-bottom: 20px; rounded: 5px;">
-        <strong>🚨 Помилки валідації форми:</strong>
-        <ul>
-            {% for field in form %}
-                {% if field.errors %}
-                    <li><strong>{{ field.label }} (поле: {{ field.name }}):</strong> {{ field.errors|striptags }}</li>
-                {% endif %}
-            {% endfor %}
-            {% if form.non_field_errors %}
-                <li>{{ form.non_field_errors|striptags }}</li>
-            {% endif %}
-        </ul>
-    </div>
-{% endif %}
                                         <div class="row">
                                             <div class="col-md-6 mb-3">
                                                 <label for="id_first_name" class="form-label">Имя*:</label>
